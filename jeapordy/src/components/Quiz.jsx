@@ -30,48 +30,44 @@ export default function Question({ answer, question, value, title
 }
 
 function Quiz({ question, correct_answer }) {
-    const [answer, setAnswer] = useState("")
+    const [userInput, setUserInput] = useState("")
     // figure out how to get keyboard input
 
-    const checkAnswer = (answer) => {
-        if (answer === correct_answer) {
+    const checkAnswer = (userInput) => {
+        if (userInput === correct_answer) {
             window.alert('congrats!')
         } else {
-            // window.alert('wrong')
+            window.alert('wrong')
         }
     }
 
     const handleInput = event => {
-        setAnswer(event.target.value)
-        console.log('typed answer: ', answer)
-        checkAnswer(answer)
+        setUserInput(event.target.value)
+        console.log('typed answer: ', userInput)
+        // checkAnswer(userInput)
     }
 
-    // useEffect(() => {
-    //     const keyDownHandler = event => {
-    //         console.log('User pressed: ', event.key);
+    // allows user to submit input with enter key
 
-    //         if (event.key === 'Enter') {
-    //             event.preventDefault();
+    const handleKeyDown = event => {
+        console.log('User pressed: ', event.key);
+        console.log('user input in use Effect: ', userInput)
 
-    //             // 👇️ your logic here
-    //             checkAnswer();
-    //         }
-    //     }
+        if (event.key === 'Enter') {
+            event.preventDefault();
 
-    //     document.addEventListener('keydown', keyDownHandler);
+            // 👇️ your logic here
+            checkAnswer(userInput);
+        }
+    }
 
-    //     return () => {
-    //         document.removeEventListener('keydown', keyDownHandler);
-    //     };
-    // }, []);
 
     return (
         <div>
 
             <h2>{question}</h2>
             <label>Answer: </label>
-            <input className='user-answer' onChange={handleInput} />
+            <input className={userInput} onChange={handleInput} onKeyDown={handleKeyDown} />
         </div>
     )
 }
