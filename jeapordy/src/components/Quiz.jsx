@@ -1,84 +1,77 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Questions } from './Question'
 
-export function Quiz() {
-    console.log('inside question file')
+export default function Question({ answer, question, value, title
+}) {
+    // console.log('inside question file')
 
     const [index, setIndex] = useState(0)
-    const [questions, setQuestions] = useState([])
-    // const isQuestionEmpty = question.length === 0;
-    const [selectedQuestion, setSelectedQuestion] = useState('')
 
-
-    // gets data from api
-    useEffect(() => {
-        console.log('use effect runs');
-        axios.get('https://jservice.io/api/random?count=10').then((res) => {
-            setQuestions(res.data)
-            console.log('checking res var', res.data[0])
-        })
-    }, [])
 
 
     const nextQuestion = () => {
+        console.log('next question pushed')
         setIndex(index + 1)
-
     }
-
-
-    // gets data from api
-    useEffect(() => {
-        console.log('use effect runs');
-        axios.get('https://jservice.io/api/random?count=10').then((res) => {
-            setQuestions(res.data)
-
-            // https://jservice.io/api/categories?count=15
-        })
-    }, [])
-    console.log('checking questions var', questions[0].question)
-
-
-    // checks to see if a question has already been selected, or sets the quetsion
-    const selectQuestion = (question) => {
-        console.log('selectQuestion runs');
-        setSelectedQuestion(question)
-    }
-
     return (
-        <>
-
-            {/* {questions.map((question) => (
-                <Question
-                    // key={questions[index].id}
-                    // answer={questions[index].answer}
-                    // question={questions[index].question}
-                    // value={questions[index].value}
-                    // title={questions[index].category.title}
-                    key={question.id}
-                    answer={question.answer}
-                    question={question.question}
-                    value={question.value}
-                    title={question.category.title}
-                    selectQuestion={selectQuestion}
-                />
-            ))} */}
-
-            <Questions
-                key={questions[index].id}
-                answer={questions[index].answer}
-                question={questions[index].question}
-                value={questions[index].value}
-                title={questions[index].category.title}
-                selectQuestion={selectQuestion}
+        // < div >
+        //     <p><b>Subject:</b> {title}</p>
+        //     <p><b>Question:</b> {question}</p>
+        //     <p><b>Answer:</b> {answer}</p>
+        //     <p><b>Point Value:</b> {value}</p>
+        // </div >
+        <div>
+            <Quiz
+                question={question}
+                correct_answer={answer}
             />
-
             <button onClick={nextQuestion}>Next Question</button>
-        </>
+        </div>
     )
 }
 
+function Quiz({ question, correct_answer }) {
+    const [answer, setAnswer] = useState("")
+    // figure out how to get keyboard input
 
+    const checkAnswer = (answer) => {
+        if (answer === correct_answer) {
+            window.alert('congrats!')
+        } else {
+            // window.alert('wrong')
+        }
+    }
 
+    const handleInput = event => {
+        setAnswer(event.target.value)
+        console.log('typed answer: ', answer)
+        checkAnswer(answer)
+    }
 
-export default Quiz;
+    // useEffect(() => {
+    //     const keyDownHandler = event => {
+    //         console.log('User pressed: ', event.key);
+
+    //         if (event.key === 'Enter') {
+    //             event.preventDefault();
+
+    //             // 👇️ your logic here
+    //             checkAnswer();
+    //         }
+    //     }
+
+    //     document.addEventListener('keydown', keyDownHandler);
+
+    //     return () => {
+    //         document.removeEventListener('keydown', keyDownHandler);
+    //     };
+    // }, []);
+
+    return (
+        <div>
+
+            <h2>{question}</h2>
+            <label>Answer: </label>
+            <input className='user-answer' onChange={handleInput} />
+        </div>
+    )
+}
