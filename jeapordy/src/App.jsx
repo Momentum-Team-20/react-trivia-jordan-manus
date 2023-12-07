@@ -27,7 +27,6 @@ function App() {
 
   return (
     <>
-      <br></br>
       {questions.map((question) => (
         <Quiz
           key={question.id}

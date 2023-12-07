@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export default function Question({ answer, question, value, title
 }) {
@@ -23,18 +23,22 @@ export default function Question({ answer, question, value, title
             <Quiz
                 question={question}
                 correct_answer={answer}
+                title={title}
             />
             <button onClick={nextQuestion}>Next Question</button>
         </div>
     )
 }
 
-function Quiz({ question, correct_answer }) {
+function Quiz({ question, correct_answer, title }) {
     const [userInput, setUserInput] = useState("")
     // figure out how to get keyboard input
+    let userInputLC = userInput.toLocaleLowerCase()
+    correct_answer = correct_answer.toLowerCase()
 
-    const checkAnswer = (userInput) => {
-        if (userInput === correct_answer) {
+
+    const checkAnswer = (userInputLC) => {
+        if (userInputLC === correct_answer) {
             window.alert('congrats!')
         } else {
             window.alert('wrong')
@@ -64,9 +68,9 @@ function Quiz({ question, correct_answer }) {
 
     return (
         <div>
-
+            <p><b>Subject:</b> {title}</p>
             <h2>{question}</h2>
-            <label>Answer: </label>
+            <label><b>Answer:</b> </label>
             <input className={userInput} onChange={handleInput} onKeyDown={handleKeyDown} />
         </div>
     )
