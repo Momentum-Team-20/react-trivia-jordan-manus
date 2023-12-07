@@ -24,22 +24,37 @@ export default function Question({ answer, question, value, title
                 question={question}
                 correct_answer={answer}
                 title={title}
+                value={value}
             />
             <button onClick={nextQuestion}>Next Question</button>
         </div>
     )
 }
 
-function Quiz({ question, correct_answer, title }) {
+function Quiz({ question, correct_answer, title, value }) {
     const [userInput, setUserInput] = useState("")
+    const [score, setUserScore] = useState(0)
+
     // figure out how to get keyboard input
-    let userInputLC = userInput.toLocaleLowerCase()
-    correct_answer = correct_answer.toLowerCase()
+    console.log('answers: ', correct_answer)
 
 
-    const checkAnswer = (userInputLC) => {
+    const addScore = (value) => {
+        let new_score = score + value
+        setUserScore(new_score)
+        console.log('users score ', score)
+    }
+
+
+    const checkAnswer = (userInput) => {
+        let userInputLC = userInput.toLowerCase()
+        correct_answer = correct_answer.toLowerCase()
+        // console.log('lower case correct_answer: ', correct_answer)
+        // console.log('lower case user input: ', userInputLC)
+
         if (userInputLC === correct_answer) {
             window.alert('congrats!')
+            addScore(value)
         } else {
             window.alert('wrong')
         }
@@ -68,10 +83,16 @@ function Quiz({ question, correct_answer, title }) {
 
     return (
         <div>
-            <p><b>Subject:</b> {title}</p>
-            <h2>{question}</h2>
-            <label><b>Answer:</b> </label>
-            <input className={userInput} onChange={handleInput} onKeyDown={handleKeyDown} />
+            <div>
+                <p><b>Subject:</b> {title}</p>
+                <h2>{question}</h2>
+                <label><b>Answer:</b> </label>
+                <input className={userInput} onChange={handleInput} onKeyDown={handleKeyDown} />
+            </div>
+            <div>
+                <p><b>Value:</b> {value}</p>
+                <p onKeyDown={handleKeyDown}><b>Score:</b> {score}</p>
+            </div>
         </div>
     )
 }
